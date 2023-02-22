@@ -16,6 +16,16 @@ const routes: Array<RouteRecordRaw> = [
         name: '圆形',
         component: ()=>import('../views/konva/circle.vue')
     },
+    {
+        path: '/animation',
+        name: '动画',
+        component: ()=>import('../views/konva/animation.vue')
+    },
+    {
+        path: '/cache',
+        name: '缓存',
+        component: ()=>import('../views/konva/cache.vue')
+    },
 
 ]
 const routers = createRouter({

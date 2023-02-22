@@ -1,10 +1,13 @@
 <script lang="ts" setup>
 import { onMounted, reactive } from 'vue';
+import {columnHeader} from './constant'
+import sdwGrid from './components/sdw-grid.vue';    
 
 const width = window.innerWidth;
 const height = window.innerHeight;
 const state = reactive<any>({
-  list: [],
+  xList: [],
+  yList: [],
   dragItemId: ''
 })
 const configKonva = {
@@ -15,22 +18,29 @@ const configKonva = {
     // save drag element:
     state.dragItemId = e.target.id();
     // move current element to the top:
-    const item: any = state.list.find((i: any) => i.id === state.dragItemId);
-    const index = state.list.indexOf(item);
-    state.list.splice(index, 1);
-    state.list.push(item);
+    const item: any = state.xList.find((i: any) => i.id === state.dragItemId);
+    const index = state.xList.indexOf(item);
+    state.xList.splice(index, 1);
+    state.xList.push(item);
 }
 const handleDragend = () => {
     state.dragItemId = null;
 }
 onMounted(()=>{
-  for (let n = 0; n < 30; n++) {
-    state.list.push({
-        id: Math.round(Math.random() * 10000).toString(),
-        x: Math.random() * width,
-        y: Math.random() * height,
-        rotation: Math.random() * 180,
-        scale: Math.random()
+  for (let n = 0; n < 10; n++) {
+    state.xList.push({
+        id: Math.round(Math.random() * 30).toString(),
+        x: 160,
+        y: 30*(n+1),
+        points: [100, 10, 900, 10]
+    });
+  }
+  for (let n = 0; n < 6; n++) {
+    state.yList.push({
+        id: Math.round(Math.random() * 6).toString(),
+        x: 160*(n+1),
+        y: 30,
+        points: [100, 10, 100, 280]
     });
   }
 })
@@ -44,20 +54,21 @@ onMounted(()=>{
       @dragend="handleDragend"
     >
       <v-layer ref="layer">
-        <v-text :config="{text: 'Some text on canvas', fontSize: 20, draggable: true}" />
-        <v-line :config="{
-            draggable: true,
-            x: 20,
-            y: 200,
-            points: [0, 0, 100, 0, 100, 100],
-            tension: 0.5,
-            closed: true,
-            stroke: 'black',
-            fillLinearGradientStartPoint: { x: -50, y: -50 },
-            fillLinearGradientEndPoint: { x: 50, y: 50 },
-            fillLinearGradientColorStops: [0, 'red', 1, 'yellow']
-        }"/>
-      </v-layer>
+        <!-- <v-text :config="{text: 'Some text on canvas', fontSize: 20, draggable: true}" /> -->
+        
+        <!-- <v-line v-for="item in state.xList" :key="item.id" :config="{
+              x : item.x, y: item.y, points: item.points, stroke: '#BBB', strokeWidth: 1,
+            }"></v-line>
+            <v-line v-for="item in state.yList" :key="item.id" :config="{
+              x : item.x, y: item.y, points: item.points, stroke: '#BBB', strokeWidth: 1,
+            }"></v-line> -->
+            <v-group :config="{x: 200, y: 20}">
+            <sdw-grid></sdw-grid>
+        </v-group>
+        <v-group :config="{x: 200, y: 20}">
+<v-text v-for="(item, index) in columnHeader" :config="{text: item.name, fontSize: 20, draggable: false, x: 160*(index), y: 5, offsetX: -60}" ></v-text>
+        </v-group>
+</v-layer>
     </v-stage>
   </div>
 </template>
