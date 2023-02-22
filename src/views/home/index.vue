@@ -26,23 +26,11 @@ const configKonva = {
 const handleDragend = () => {
     state.dragItemId = null;
 }
+//https://blog.csdn.net/yanxiaosa/article/details/70273277
+const handleGridClick = (evt: any)=>{
+  console.log('evt', evt)
+}
 onMounted(()=>{
-  for (let n = 0; n < 10; n++) {
-    state.xList.push({
-        id: Math.round(Math.random() * 30).toString(),
-        x: 160,
-        y: 30*(n+1),
-        points: [100, 10, 900, 10]
-    });
-  }
-  for (let n = 0; n < 6; n++) {
-    state.yList.push({
-        id: Math.round(Math.random() * 6).toString(),
-        x: 160*(n+1),
-        y: 30,
-        points: [100, 10, 100, 280]
-    });
-  }
 })
 </script>
 <template>
@@ -50,8 +38,7 @@ onMounted(()=>{
     <v-stage
       ref="stage"
       :config="configKonva"
-      @dragstart="handleDragstart"
-      @dragend="handleDragend"
+      @click="handleGridClick"
     >
       <v-layer ref="layer">
         <!-- <v-text :config="{text: 'Some text on canvas', fontSize: 20, draggable: true}" /> -->
@@ -62,11 +49,10 @@ onMounted(()=>{
             <v-line v-for="item in state.yList" :key="item.id" :config="{
               x : item.x, y: item.y, points: item.points, stroke: '#BBB', strokeWidth: 1,
             }"></v-line> -->
-            <v-group :config="{x: 200, y: 20}">
+            <v-group :config="{x: 200, y: 20}" >
             <sdw-grid></sdw-grid>
-        </v-group>
-        <v-group :config="{x: 200, y: 20}">
 <v-text v-for="(item, index) in columnHeader" :config="{text: item.name, fontSize: 20, draggable: false, x: 160*(index), y: 5, offsetX: -60}" ></v-text>
+
         </v-group>
 </v-layer>
     </v-stage>
