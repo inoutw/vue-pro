@@ -12,3 +12,4 @@ export const GRID_CONFIG = {rows: DEFAULT_ROW_COUNT, cols: DEFAULT_COL_COUNT, ce
 
 export const DEFAULT_ACTIVE_BORDER_COLOR = '#7B67EE'
 export const DEFAULT_HOVER_COLOR = 'rgba(0, 2, 180, 0.05)'
+export const DEFAULT_CHECKBOX_BORDER_COLOR = '#8c8c8c'
