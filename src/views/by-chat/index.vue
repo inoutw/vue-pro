@@ -1,111 +1,31 @@
-<template>
-    <v-stage :config="stageSize">
-      <v-layer>
-        <v-rect v-for="(cell, index) in cells" :key="index" :config="cell" />
-      </v-layer>
-    </v-stage>
-  </template>
-  
-  <script>
-  import { ref, onMounted } from "vue";
-  import { Stage, Layer, Rect } from "vue-konva";
-  
-  export default {
-    components: {
-      Stage,
-      Layer,
-      Rect,
-    },
-    setup() {
-      const stageSize = {
-        width: 400,
-        height: 300,
-      };
-  
-      const cellSize = {
-        width: stageSize.width / 4,
-        height: stageSize.height / 3,
-      };
-  
-      const cells = ref([]);
-  
-      const createCells = () => {
-        const rows = 3;
-        const columns = 4;
-        for (let i = 0; i < rows; i++) {
-          for (let j = 0; j < columns; j++) {
-            const x = j * cellSize.width;
-            const y = i * cellSize.height;
-            const fill = "white";
-            const stroke = "black";
-            const strokeWidth = 2;
-  
-            // 设置相邻格子共用边线的颜色
-            const topColor = i > 0 ? cells.value[(i - 1) * columns + j].stroke : stroke;
-            const rightColor = j < columns - 1 ? cells.value[i * columns + j + 1].stroke : stroke;
-            const bottomColor = i < rows - 1 ? cells.value[(i + 1) * columns + j].stroke : stroke;
-            const leftColor = j > 0 ? cells.value[i * columns + j - 1].stroke : stroke;
-  
-            cells.value.push({
-              x,
-              y,
-              width: cellSize.width,
-              height: cellSize.height,
-              fill,
-              stroke: "white",
-              strokeWidth,
-              shadowColor: "black",
-              shadowBlur: 5,
-              shadowOffset: { x: 5, y: 5 },
-              shadowOpacity: 0.5,
-              listening: false,
-              // 设置相邻格子共用边线的颜色
-              perfectDrawEnabled: false,
-              strokeScaleEnabled: false,
-              strokeHitEnabled: false,
-              dashEnabled: false,
-              lineJoin: "round",
-              lineCap: "round",
-              dash: [0, 0],
-              sceneFunc(context, shape) {
-                context.beginPath();
-                context.moveTo(shape.x(), shape.y());
-                context.lineTo(shape.x() + shape.width(), shape.y());
-                context.strokeStyle = topColor;
-                context.stroke();
-  
-                context.beginPath();
-                context.moveTo(shape.x() + shape.width(), shape.y());
-                context.lineTo(shape.x() + shape.width(), shape.y() + shape.height());
-                context.strokeStyle = rightColor;
-                context.stroke();
-  
-                context.beginPath();
-                context.moveTo(shape.x() + shape.width(), shape.y() + shape.height());
-          context.lineTo(shape.x(), shape.y() + shape.height());
-          context.strokeStyle = bottomColor;
-          context.stroke();
 
-          context.beginPath();
-          context.moveTo(shape.x(), shape.y() + shape.height());
-          context.lineTo(shape.x(), shape.y());
-          context.strokeStyle = leftColor;
-          context.stroke();
-        },
-      });
+  
+<template>
+  <v-stage :config="{ width: 500, height: 200 }">
+    <v-layer>
+      <v-rect :config="{ width: 500, height: 200, fill: '#f0f0f0' }"></v-rect>
+      <v-group v-for="(item, index) in dataList" :key="index" :x="20" :y="40 + index * 30">
+        <v-text :config="{ text: item.name, fontSize: 16 }"></v-text>
+        <v-text :config="{ text: item.age, x: 120, fontSize: 16 }"></v-text>
+        <v-text :config="{ text: item.city, x: 220, fontSize: 16 }"></v-text>
+      </v-group>
+      <v-line :config="{ points: [20, 30, 480, 30], stroke: 'black', strokeWidth: 2 }"></v-line>
+      <v-line :config="{ points: [20, 60, 480, 60], stroke: 'black', strokeWidth: 2 }"></v-line>
+      <v-line :config="{ points: [20, 90, 480, 90], stroke: 'black', strokeWidth: 2 }"></v-line>
+    </v-layer>
+  </v-stage>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      dataList: [
+        { name: 'John', age: 25, city: 'New York' },
+        { name: 'Jane', age: 32, city: 'Los Angeles' },
+        { name: 'Bob', age: 47, city: 'Chicago' }
+      ]
     }
   }
-};
-
-onMounted(() => {
-  createCells();
-});
-
-return {
-  stageSize,
-  cells,
-};
-},
-};
+}
 </script>
   

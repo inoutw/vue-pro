@@ -11,7 +11,7 @@ export const useCellPosArr = ({rows, cols, cellWidth, cellHeight}: any, filterHe
             cellPosArr.push({left: cellWidth*j, top:cellHeight*i, width:cellWidth, height: cellHeight  })
         }
     }
-    console.log('cellPosArr', cellPosArr)
+    // console.log('cellPosArr', cellPosArr)
     return cellPosArr
 }
 
@@ -26,6 +26,6 @@ export const useCellPosArr = ({rows, cols, cellWidth, cellHeight}: any, filterHe
     for(let r=rowStart; r< rows; r++){
         rowPosArr.push({left: 0, top: cellHeight*r, width:cellWidth * cols, height: cellHeight  })
     }
-    console.log('rowPosArr', rowPosArr)
+    // console.log('rowPosArr', rowPosArr)
     return rowPosArr
 }

@@ -58,10 +58,10 @@ onMounted(()=>{
 </script>
 <template>
         <v-line v-for="item in state.xList" :key="item.id" :config="{
-              x : item.x, y: item.y, points: item.points, stroke: '#BBB', strokeWidth: 1,
+              x : item.x, y: item.y, points: item.points, stroke: '#BBB', strokeWidth: 0.5,
             }"></v-line>
             <v-line v-for="item in state.yList" :key="item.id" :config="{
-              x : item.x, y: item.y, points: item.points, stroke: '#BBB', strokeWidth: 1,
+              x : item.x, y: item.y, points: item.points, stroke: '#BBB', strokeWidth: 0.5,
             }"></v-line>
 </template>
 <style>
