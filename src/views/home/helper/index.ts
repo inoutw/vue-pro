@@ -39,7 +39,7 @@ export const getTargetGrid = (pos: {x: number, y: number}, grids: any[], offset=
   for(let item of rows) {
     let {left, top, width, height} = item
     if (xFinal >= left && xFinal <= left + width && yFinal >= top && yFinal <= top + height) {
-          console.log(`hover行`, item);
+          // console.log(`hover行`, item);
           res = item
           break
         }

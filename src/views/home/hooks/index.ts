@@ -6,9 +6,9 @@ export const useCellPosArr = ({rows, cols, cellWidth, cellHeight}: any, filterHe
     const cellPosArr: any = []
     // 第一行是表头，过滤掉，不能选中
     const rowStart = filterHeader ? 1 : 0
-    for(let i=0; i< rows; i++){
-        for(let j=rowStart; j< cols;j++) {
-            cellPosArr.push({left: cellWidth*i, top:cellHeight*j, width:cellWidth, height: cellHeight  })
+    for(let i=rowStart; i< rows; i++){
+        for(let j=0; j< cols;j++) {
+            cellPosArr.push({left: cellWidth*j, top:cellHeight*i, width:cellWidth, height: cellHeight  })
         }
     }
     console.log('cellPosArr', cellPosArr)
