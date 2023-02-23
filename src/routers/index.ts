@@ -26,6 +26,11 @@ const routes: Array<RouteRecordRaw> = [
         name: '缓存',
         component: ()=>import('../views/konva/cache.vue')
     },
+    {
+        path: '/by-chat',
+        name: '缓存',
+        component: ()=>import('../views/by-chat/index.vue')
+    },
 
 ]
 const routers = createRouter({
