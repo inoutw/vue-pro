@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { DEFAULT_ACTIVE_BORDER_COLOR, DEFAULT_CELL_HEIGHT, DEFAULT_CELL_WIDTH } from '../constant';
+import { DEFAULT_ACTIVE_BORDER_COLOR, DEFAULT_CELL_HEIGHT, DEFAULT_CELL_WIDTH, DEFAULT_HOVER_COLOR, DEFAULT_ROW_WIDTH } from '../constant';
 /**
  * 选中的高亮格子
  */
@@ -14,7 +14,7 @@ defineProps({
     },
     width: {
         type: Number,
-        default: DEFAULT_CELL_WIDTH
+        default: DEFAULT_ROW_WIDTH
     },
     height: {
         type: Number,
@@ -22,17 +22,13 @@ defineProps({
     },
     fill: {
         type: String,
-        default: '#fff'
+        default: DEFAULT_HOVER_COLOR
     },
-    stroke: {
-        type: String,
-        default: DEFAULT_ACTIVE_BORDER_COLOR
-    }
+    
 })
 </script>
 <template>
     <v-rect :config="{x: left, y: top, width, height, fill,
-              stroke,
-              strokeWidth:2, ...$attrs}"></v-rect>
+              strokeWidth:0, ...$attrs}"></v-rect>
               {{$attrs}}
 </template>
