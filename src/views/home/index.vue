@@ -37,8 +37,8 @@ const handleGridClick = (evt: any)=>{
     inputStr.value = ''
   }
   activeCell.value = targetGrid
-  activeCellData.value = targetCellVal
-  console.log('targetCellVal', targetCellVal)
+  activeCellData.value = !isEmpty(targetCellVal) ? targetCellVal: targetGrid
+  console.log('targetCellVal',activeCell, targetCellVal)
 }
 const rowsPos = useRowPosArr(GRID_CONFIG)
 const handleMouseMove = ({evt, target}: any)=>{
@@ -64,12 +64,13 @@ const checkBoxShow = (index: number)=>{
   return  hoveredRowTop / DEFAULT_CELL_HEIGHT === index
 }
 
-useEventListener(()=>{
-  if(isEmpty(activeCell)) return
-  window.addEventListener('keypress', (evt: any)=>{
+useEventListener(document, 'keypress', (evt: any)=>{
+  if(isEmpty(activeCell.value)) return
     inputStr.value += evt.key
+    if(!activeCellData.value.value){
+      cellValPosArr.push(activeCellData.value)
+    }
     activeCellData.value.value = inputStr.value
-  })
 })
 </script>
 <template>

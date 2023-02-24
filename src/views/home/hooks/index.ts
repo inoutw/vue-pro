@@ -1,5 +1,5 @@
 import {isEmpty} from 'lodash'
-import { DEFAULT_CELL_WIDTH, GRID_CONFIG } from '../constant'
+import { GRID_CONFIG } from '../constant'
 /**
  * 生成栅格位置信息数组
  * filterHeader:是否过滤第一行格子
