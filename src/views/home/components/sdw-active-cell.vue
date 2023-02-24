@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import {isEmpty} from 'lodash'
 import { DEFAULT_ACTIVE_BORDER_COLOR, DEFAULT_CELL_HEIGHT, DEFAULT_CELL_WIDTH } from '../constant';
 /**
  * 选中的高亮格子
@@ -30,11 +31,11 @@ const props = defineProps({
     },
     cellValue: {
         type: Object,
-        default: {}
+        default: {left: 0, top: 0}
     },
     cellType: {
         type: String,
-        default: 'text'
+        default: ''
     }
 })
 
@@ -44,6 +45,6 @@ const props = defineProps({
               stroke,
               strokeWidth:2, ...$attrs}"></v-rect>
               <!--高亮格子之上的值-->
-              <v-text v-if="cellType==='text'" :config="{text: cellValue.value, x: cellValue.left+10, y: cellValue.top+10, fontSize: 16}"></v-text>
+              <v-text v-if="cellType==='text' && !isEmpty(cellValue)" :config="{text: cellValue.value, x: cellValue.left+10, y: cellValue?.top+10, fontSize: 16}"></v-text>
              
 </template>

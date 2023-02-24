@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { onMounted, onUnmounted, reactive, ref } from 'vue';
 import {isEmpty} from 'lodash';
+import {useEventListener} from '@vueuse/core'
 import {GRID_OFFSET,GRID_CONFIG, DEFAULT_CELL_WIDTH, DEFAULT_CELL_HEIGHT, DEFAULT_CHECKBOX_BORDER_COLOR} from './constant'
 import SdwGrid from './components/sdw-grid.vue';    
 import SdwHoveredRow from './components/sdw-hovered-row.vue';    
@@ -20,6 +21,7 @@ const configKonva = {
 const activeCell = ref<any>({})
 const activeCellData = ref<any>({})
 const hoveredRow = ref<any>({})
+const inputStr = ref<string>('')
 // 栅格的位置
 const cellsPos = useCellPosArr(GRID_CONFIG)
 // 数据列表的位置
@@ -29,8 +31,11 @@ const handleGridClick = (evt: any)=>{
   const stage = evt.target.getStage();
   const pos = stage.getPointerPosition();
   const targetGrid = getTargetGrid(pos, cellsPos, GRID_OFFSET)
-const targetCellVal = getTargetGrid(pos, cellValPosArr, GRID_OFFSET)
-
+  const targetCellVal = getTargetGrid(pos, cellValPosArr, GRID_OFFSET)
+  //切换了格子
+  if(!isEmpty(activeCell.value) && targetGrid.top !== activeCell.value.top){
+    inputStr.value = ''
+  }
   activeCell.value = targetGrid
   activeCellData.value = targetCellVal
   console.log('targetCellVal', targetCellVal)
@@ -58,6 +63,14 @@ const checkBoxShow = (index: number)=>{
   let hoveredRowTop = hoveredRow.value.top
   return  hoveredRowTop / DEFAULT_CELL_HEIGHT === index
 }
+
+useEventListener(()=>{
+  if(isEmpty(activeCell)) return
+  window.addEventListener('keypress', (evt: any)=>{
+    inputStr.value += evt.key
+    activeCellData.value.value = inputStr.value
+  })
+})
 </script>
 <template>
   <div>
