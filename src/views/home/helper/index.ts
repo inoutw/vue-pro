@@ -46,3 +46,27 @@ export const getTargetGrid = (pos: {x: number, y: number}, grids: any[], offset=
   }
   return res
 }
+
+/**
+ *  在给定的数据数组中，根据高亮的框，找到该项数据
+ * @param pos 鼠标位置
+ * @param grids 栅格数组
+ * @param offset 栅格所在的父元素Group的偏移
+ * @returns 目标行
+ */
+ export const getTargetCellVal = (pos: {x: number, y: number}, rows: any[], offset= {x:0, y:0})=>{
+  if(isEmpty(pos) || isEmpty(rows)) return 
+  const { x, y } = pos;
+  let res: any = {}
+  const xFinal = x-offset.x
+  const yFinal = y- offset.y
+  for(let item of rows) {
+    let {left, top, width, height} = item
+    if (xFinal >= left && xFinal <= left + width && yFinal >= top && yFinal <= top + height) {
+          // console.log(`hover行`, item);
+          res = item
+          break
+        }
+  }
+  return res
+}

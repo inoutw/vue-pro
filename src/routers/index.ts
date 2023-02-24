@@ -28,8 +28,13 @@ const routes: Array<RouteRecordRaw> = [
     },
     {
         path: '/by-chat',
-        name: '缓存',
+        name: 'chat',
         component: ()=>import('../views/by-chat/index.vue')
+    },
+    {
+        path: '/eye-dropper',
+        name: '缓存',
+        component: ()=>import('../views/eyedropper/index.vue')
     },
 
 ]
