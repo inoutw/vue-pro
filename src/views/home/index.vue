@@ -33,7 +33,7 @@ const handleGridClick = (evt: any)=>{
   const targetGrid = getTargetGrid(pos, cellsPos, GRID_OFFSET)
   const targetCellVal = getTargetGrid(pos, cellValPosArr, GRID_OFFSET)
   //切换了格子
-  if(!isEmpty(activeCell.value) && targetGrid.top !== activeCell.value.top){
+  if(!isEmpty(activeCell.value) && (targetGrid.top !== activeCell.value.top || targetGrid.left !== activeCell.value.left)){
     inputStr.value = ''
   }
   activeCell.value = targetGrid
