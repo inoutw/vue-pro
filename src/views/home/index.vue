@@ -9,7 +9,6 @@ import SdwActiveCell from './components/sdw-active-cell.vue';
 import { useCellPosArr, useCellValPosArr, useRowPosArr } from './hooks';
 import { getTargetGrid, getTargetRow } from './helper';
 import { mockData, columnHeader } from './data/index';
-import { computed } from '@vue/reactivity';
 
 const width = window.innerWidth;
 const height = window.innerHeight;
@@ -66,12 +65,21 @@ const checkBoxShow = (index: number)=>{
 
 useEventListener(document, 'keypress', (evt: any)=>{
   if(isEmpty(activeCell.value)) return
-    inputStr.value += evt.key
+  let inputRes = inputStr.value
+  inputRes += evt.key
     if(!activeCellData.value.value){
       cellValPosArr.push(activeCellData.value)
     }
-    activeCellData.value.value = inputStr.value
+    inputStr.value = inputRes
+    activeCellData.value.value = inputRes
 })
+
+
+const handleGridDbClick = (evt: any)=>{
+  const {x, y} = evt
+  console.log('dbclick', x, y)
+}
+useEventListener(document, 'dblclick', handleGridDbClick)
 </script>
 <template>
   <div>
@@ -96,7 +104,7 @@ useEventListener(document, 'keypress', (evt: any)=>{
       </v-group>
 
       <v-group :x="10">
-        <v-text v-for="(colItem, keyIndex) in cellValPosArr" :key="keyIndex"
+        <v-text  v-for="(colItem, keyIndex) in cellValPosArr" :key="keyIndex" 
           :config="{ text: colItem.value, x: colItem.left, y: colItem.top + 10, fontSize: 16}"
         ></v-text>
       </v-group>

@@ -32,6 +32,11 @@ const routes: Array<RouteRecordRaw> = [
         component: ()=>import('../views/by-chat/index.vue')
     },
     {
+        path: '/cursor',
+        name: 'cursor',
+        component: ()=>import('../views/by-chat/cursor.vue')
+    },
+    {
         path: '/eye-dropper',
         name: '缓存',
         component: ()=>import('../views/eyedropper/index.vue')

@@ -43,7 +43,7 @@ const props = defineProps({
 <template>
     <v-rect :config="{x: left, y: top, width, height, fill,
               stroke,
-              strokeWidth:2, ...$attrs}"></v-rect>
+              strokeWidth:2, ...$attrs}"  ></v-rect>
               <!--高亮格子之上的值-->
               <v-text v-if="cellType==='text' && !isEmpty(cellValue)" :config="{text: cellValue.value, x: cellValue.left+10, y: cellValue?.top+10, fontSize: 16}"></v-text>
              
