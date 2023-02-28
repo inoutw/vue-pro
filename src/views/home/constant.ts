@@ -1,8 +1,8 @@
 
 export const GRID_OFFSET = {x: 200, y: 20}
 
-export const DEFAULT_CELL_WIDTH = 160
-export const DEFAULT_CELL_HEIGHT = 30
+export const DEFAULT_CELL_WIDTH = 200
+export const DEFAULT_CELL_HEIGHT = 32
 export const DEFAULT_ROW_COUNT = 10
 export const DEFAULT_COL_COUNT = 4
 
