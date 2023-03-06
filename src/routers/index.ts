@@ -41,6 +41,11 @@ const routes: Array<RouteRecordRaw> = [
         name: '缓存',
         component: ()=>import('../views/eyedropper/index.vue')
     },
+    {
+        path: '/tree-link',
+        name: 'tree-link',
+        component: ()=>import('../views/tree-link/antv-x6.vue')
+    },
 
 ]
 const routers = createRouter({
