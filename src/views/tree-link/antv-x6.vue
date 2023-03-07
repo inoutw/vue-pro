@@ -1,18 +1,28 @@
 <script lang="ts" setup>
-import '@antv/x6-vue-shape'
 import { Graph } from '@antv/x6'
 import { onMounted } from 'vue'
 import { ElTree } from 'element-plus'
 import { data } from './data';
 
-Graph.registerNode("my-tree", {
-  inherit: "vue-shape",
-  x: 200,
-  y: 150,
-  width: 150,
-  height: 100,
-  component: ElTree,
-});
+// Graph.registerVueComponent("my-tree", {
+//   inherit: "vue-shape",
+//   x: 200,
+//   y: 150,
+//   width: 150,
+//   height: 100,
+//   component: ElTree,
+// });
+
+Graph.registerVueComponent(
+        "my-tree",
+        {
+          template: `<ElTree />`,
+          components: {
+            ElTree,
+          },
+        },
+        true
+      );
 
 console.log('data',data)
 

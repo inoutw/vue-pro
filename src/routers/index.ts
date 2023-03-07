@@ -46,6 +46,16 @@ const routes: Array<RouteRecordRaw> = [
         name: 'tree-link',
         component: ()=>import('../views/tree-link/antv-x6.vue')
     },
+    {
+        path: '/x62',
+        name: 'x62',
+        component: ()=>import('../views/tree-link/x62.vue')
+    },
+    {
+        path: '/hello',
+        name: 'hello',
+        component: ()=>import('../views/tree-link/hello.vue')
+    },
 
 ]
 const routers = createRouter({
