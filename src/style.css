@@ -76,3 +76,34 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+
+.g6-node {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  padding: 3px 8px;
+  position: relative;
+  font-size: 12px;
+  border-radius: 6px;
+  background-color: #097;
+  /* opacity: 0.3; */
+}
+.nodeImg {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+}
+.content {
+  text-align: left;
+}
+.content .title {
+  font-size: 16px;
+  font-weight: bold;
+  color: #000;
+}
+
+.content .des {
+  font-size: 14px;
+  color: #000;
+}

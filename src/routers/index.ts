@@ -56,7 +56,11 @@ const routes: Array<RouteRecordRaw> = [
         name: 'hello',
         component: ()=>import('../views/tree-link/hello.vue')
     },
-
+    {
+        path: '/relationMap',
+        name: 'relationMap',
+        component: ()=>import('../views/tree-link/relationMap.vue')
+    },
 ]
 const routers = createRouter({
     history: createWebHistory('/'),
