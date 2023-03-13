@@ -88,6 +88,7 @@ button:focus-visible {
   border-radius: 6px;
   background-color: #097;
   /* opacity: 0.3; */
+  /* user-select:none; */
 }
 .nodeImg {
   width: 20px;

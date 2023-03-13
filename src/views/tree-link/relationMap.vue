@@ -2,6 +2,7 @@
 import { onMounted, ref, nextTick } from 'vue'
 import G6 from '@antv/g6'
 import vueSvg from "../../assets/vue.svg";
+import { debounce } from "lodash";
 const nodeCfg = {
   width: 160,
   height: 50,
@@ -178,8 +179,7 @@ G6.registerNode(
     update: (cfg, node) => {
     },
     setState(name,value,item){ 
-      console.log(item);
-      
+      console.log("setState",item);
       const group = item.getContainer();
       const icon = group.find((e: any) => e.get('name') === 'collapse-icon');
       if(name==='collapse') {
@@ -192,7 +192,7 @@ G6.registerNode(
           stroke:'#fff',
           lineWidth:2
         }
-      graph.value.refreshPositions();
+      // graph.value.refreshPositions();
         // icon.destroy()
       // icon.attrs=attrs
       icon.attr('symbol', value ? G6.Marker.expand : G6.Marker.collapse);
@@ -235,9 +235,9 @@ const tooltip = new G6.Tooltip({
 const nodeLayout={
     renderer: 'svg',
     container: 'mountNode',
-    // linkCenter: true,
-    fitView:true,
-    plugins: [tooltip],
+    fitCenter: true,
+    // fitView:true,
+    // plugins: [tooltip],
     width: 1400,
     height: 900,
     modes: {
@@ -245,26 +245,28 @@ const nodeLayout={
     },
     layout: {
       type: 'fruchterman',
+      unitRadius: 100,
       center: [200, 200], // 可选，默认为图的中心
       gravity: 2, // 可选
-      speed: 1, // 可选
+      speed: 0.8, // 可选
       clustering: false, // 可选
       clusterGravity: 100, // 可选
       gpuEnabled:true,
-    //   type: 'radial',
-    // focusNode: 'li',
+      preventOverlap: true, // 防止节点重叠
+      nodeSize: 100,
+      linkDistance: 150 // 指定边距离为150
     },
     animate: true,
     defaultNode: {
       type: 'icon-node',
+      size: [40, 40] // 节点大小
     },
     defaultEdge: {
-      type: 'arc',
+      type: 'quadratic',
       size:0.8,
       color: '#4b86bf',
       lineWidth:2,
       targetAnchor: ['Left', 'Top'],
-      
     labelCfg: {
       autoRotate: true,
       // style:{
@@ -280,7 +282,17 @@ const nodeLayout={
         lineWidth:1.2,
         endArrow: true,
       }
-    }
+    },
+    // edgeStateStyles: {
+    //   selected: {
+    //     stroke: '#0282FF',
+    //     shadowBlur: 0,
+    //     'text-shape': {
+    //       fill: "#0282FF",
+    //       fontWeight: 600,
+    //     }
+    //   }
+    // },
   }
 
 let data = ref({
@@ -347,6 +359,18 @@ let data1=ref({
       cluster: 'a',
       des:'hahahaha',
     },
+    {
+      id: '69',
+      label: '1111',
+      cluster: 'a',
+      des:'hahahaha123',
+    },
+    {
+      id: '70',
+      label: '11111',
+      cluster: 'a',
+      des:'hahahaha123',
+    },
   ],
   edges: [
     {
@@ -361,8 +385,64 @@ let data1=ref({
       source:"17",
       target:"68"
     },
+    {
+      source:"69",
+      target:"70"
+    },
+    {
+      source:"70",
+      target:"17"
+    },
   ]
 })
+
+let data2=ref({
+  nodes: [
+    {
+      id: '80',
+      label: '80',
+      cluster: 'a',
+      des:'hahahaha',
+    },
+    {
+      id: '81',
+      label: '81',
+      cluster: 'a',
+      des:'hahahaha',
+    },
+    {
+      id: '82',
+      label: '82',
+      cluster: 'a',
+      des:'hahahaha',
+    },
+    {
+      id: '83',
+      label: '83',
+      cluster: 'a',
+      des:'hahahaha123',
+    },
+  ],
+  edges: [
+    {
+      source:"17",
+      target:"80"
+    },
+    {
+      source:"17",
+      target:"81"
+    },
+    {
+      source:"17",
+      target:"82"
+    },
+    {
+      source:"83",
+      target:"17"
+    },
+  ]
+})
+
 const mountNode = ref()
 
 const iconClick=()=>{
@@ -374,14 +454,21 @@ const initG6=()=>{
   graph.value = new G6.Graph(nodeLayout)
   graph.value.data(data.value)
   graph.value.render()
-  
   graph.value.on('collapse-icon:click',  (ev: any) => {
     let model = ev.item.getModel()
     const anchorPoints = ev.item.getAnchorPoints();
-    console.log(anchorPoints);
+    console.log(model.id);
     let zoom=graph.value.getZoom().toFixed(1)
     if(!model.collapsed) {
-      data1.value.nodes.forEach(v=>{
+      if(model.id==66) {
+        data2.value.nodes.forEach(v=>{
+      graph.value.addItem('node',{...v,collapsed:false,isChild:model.id,x:Math.ceil(Math.random())})
+      })
+      data2.value.edges.forEach(v=>{
+          graph.value.addItem('edge',v)
+      })
+      }else {
+        data1.value.nodes.forEach(v=>{
       graph.value.addItem('node',{...v,collapsed:false,isChild:model.id})
       })
       data1.value.edges.forEach(v=>{
@@ -389,6 +476,7 @@ const initG6=()=>{
       })
       graph.value.updateItem(model.id, { ...model, collapsed: !model.collapsed })
       graph.value.setItemState(model.id,"collapse",!model.collapsed)
+    }
       // 没有数据
       // graph.value.setItemState(model.id,"opacity",false)
     }else {
@@ -402,32 +490,34 @@ const initG6=()=>{
           graph.value.removeItem(el._cfg.id)
         }
       })
-      
-      
-      // const nodes = graph.value.getNeighbors(model.id,'target');
-      // console.log(nodes);
-      // graph.value.removeItem('66')
-      // graph.value.removeItem('67')
-      // graph.value.removeItem('68')
     }
-    // graph.value.changeData();
-    console.log(graph.value);
-    graph.value.layout()
-    graph.value.layout(nodeLayout)
-    graph.value.fitCenter()
+    graph.value.layout()  
+    // graph.value.layout(nodeLayout)
+    // graph.value.fitCenter()
   })
   graph.value.on('nodeDom:click',nodeClick)
+  graph.value.on('nodeDom:dblclick',nodeDblclick)
 }
 
-const drawer=ref(false)
 
+const drawer=ref(false)
+let timer:any=null
+const nodeDblclick=(ev)=>{
+  clearTimeout(timer);
+  console.log(ev);
+}
 
 const nodeClick=(ev)=>{
-  drawer.value=true
+  clearTimeout(timer); 
+  timer=setTimeout(function(){
+    ev.stopPropagation();
+    drawer.value=true
+ },300)
 }
 
 function cancelClick() {
   drawer.value = false
+  
 }
 
 onMounted(() => {
@@ -440,6 +530,7 @@ onMounted(() => {
     v-model="drawer"
     title="I am the title"
     :before-close="cancelClick"
+    :modal="false"
   >
     <span>Hi, there!</span>
   </el-drawer>
