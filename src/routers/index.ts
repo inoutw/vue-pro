@@ -1,69 +1,37 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
+import qs from 'qs'
+import { getMenu } from '../layout/helper'
+import { useMenuTree } from '../store/menu-store'
+import { createPinia } from 'pinia'
+const routes: Array<RouteRecordRaw> = []
 
-const routes: Array<RouteRecordRaw> = [
-    {
-        path: '/',
-        name: '首页',
-        component: ()=>import('../views/home/index.vue')
-    },
-    {
-        path: '/konva',
-        name: '画布',
-        component: ()=>import('../views/konva/index.vue')
-    },
-    {
-        path: '/circle',
-        name: '圆形',
-        component: ()=>import('../views/konva/circle.vue')
-    },
-    {
-        path: '/animation',
-        name: '动画',
-        component: ()=>import('../views/konva/animation.vue')
-    },
-    {
-        path: '/cache',
-        name: '缓存',
-        component: ()=>import('../views/konva/cache.vue')
-    },
-    {
-        path: '/by-chat',
-        name: 'chat',
-        component: ()=>import('../views/by-chat/index.vue')
-    },
-    {
-        path: '/cursor',
-        name: 'cursor',
-        component: ()=>import('../views/by-chat/cursor.vue')
-    },
-    {
-        path: '/eye-dropper',
-        name: '缓存',
-        component: ()=>import('../views/eyedropper/index.vue')
-    },
-    {
-        path: '/tree-link',
-        name: 'tree-link',
-        component: ()=>import('../views/tree-link/antv-x6.vue')
-    },
-    {
-        path: '/x62',
-        name: 'x62',
-        component: ()=>import('../views/tree-link/x62.vue')
-    },
-    {
-        path: '/hello',
-        name: 'hello',
-        component: ()=>import('../views/tree-link/hello.vue')
-    },
-    {
-        path: '/relationMap',
-        name: 'relationMap',
-        component: ()=>import('../views/tree-link/relationMap.vue')
-    },
-]
 const routers = createRouter({
-    history: createWebHistory('/'),
-    routes
+  history: createWebHistory('/'),
+  routes
+})
+const store = createPinia()
+const storeMenuTree: any = useMenuTree(store)
+routers.beforeEach(async (to, from, next) => {
+  let remoteMenus: any = await getMenu()
+  remoteMenus?.forEach((route: any) => {
+    routers.addRoute(route)
+  })
+  const list: any[] = routes.concat(remoteMenus)
+  console.log('list', list)
+  // const list: any[] = remoteMenus
+  storeMenuTree.setMenuTree(list)
+
+  if (to.path === '/') {
+    next()
+    return
+  }
+
+  if (storeMenuTree.menuTree.length) {
+    next()
+    return
+  }
+  next({ ...to, replace: true })
+  return
 })
 export default routers
+export { store }

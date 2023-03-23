@@ -299,21 +299,21 @@ let data = ref({
   nodes: [
     {
       id: '0',
-      label: '123123213213123123',
+      label: '0',
       cluster: 'a',
       des:'hahahaha',
       collapse:false
     },
     {
       id: '1',
-      label: '123123213213123123',
+      label: '1',
       cluster: 'a',
       des:'hahahaha',
       collapse:false
     },
     {
-      id: '17',
-      label: '17',
+      id: '2',
+      label: '2',
       cluster: 'b',
       collapsed:false
     },
@@ -326,14 +326,14 @@ let data = ref({
     },
     {
       source: '1',
-      target: '17',
+      target: '2',
       label: '阿斯顿撒多',
       // style: {
       //   fill: '#ccc',
       // }
     },
     {
-      source: '17',
+      source: '2',
       target: '0',
     },
   ]
@@ -342,56 +342,50 @@ let data = ref({
 let data1=ref({
   nodes: [
     {
-      id: '66',
-      label: '66666666',
+      id: '21',
+      label: '21',
       cluster: 'a',
-      des:'hahahaha',
+      des:'21',
     },
     {
-      id: '67',
-      label: '5555',
+      id: '22',
+      label: '22',
       cluster: 'a',
-      des:'hahahaha',
+      des:'22',
     },
     {
-      id: '68',
-      label: '8888',
+      id: '23',
+      label: '23',
       cluster: 'a',
-      des:'hahahaha',
+      des:'23',
     },
     {
-      id: '69',
-      label: '1111',
+      id: '24',
+      label: '24',
       cluster: 'a',
-      des:'hahahaha123',
-    },
-    {
-      id: '70',
-      label: '11111',
-      cluster: 'a',
-      des:'hahahaha123',
+      des:'24',
     },
   ],
   edges: [
     {
-      source:"17",
-      target:"66"
+      source:"1",
+      target:"21"
     },
     {
-      source:"17",
-      target:"67"
+      source:"1",
+      target:"22"
     },
     {
-      source:"17",
-      target:"68"
+      source:"2",
+      target:"23"
     },
     {
-      source:"69",
-      target:"70"
+      source:"2",
+      target:"24"
     },
     {
-      source:"70",
-      target:"17"
+      source:"3",
+      target:"21"
     },
   ]
 })
@@ -399,49 +393,45 @@ let data1=ref({
 let data2=ref({
   nodes: [
     {
-      id: '80',
-      label: '80',
+      id: '31',
+      label: '31',
       cluster: 'a',
-      des:'hahahaha',
+      des:'31',
     },
     {
-      id: '81',
-      label: '81',
+      id: '34',
+      label: '34',
       cluster: 'a',
-      des:'hahahaha',
+      des:'34',
     },
     {
-      id: '82',
-      label: '82',
+      id: '35',
+      label: '35',
       cluster: 'a',
-      des:'hahahaha',
-    },
-    {
-      id: '83',
-      label: '83',
-      cluster: 'a',
-      des:'hahahaha123',
+      des:'35',
     },
   ],
   edges: [
     {
-      source:"17",
-      target:"80"
+      source:"0",
+      target:"34"
     },
     {
-      source:"17",
-      target:"81"
+      source:"0",
+      target:"35"
     },
     {
-      source:"17",
-      target:"82"
+      source:"0",
+      target:"31"
     },
     {
-      source:"83",
-      target:"17"
+      source:"22",
+      target:"2"
     },
+    
   ]
 })
+
 
 const mountNode = ref()
 
@@ -459,8 +449,9 @@ const initG6=()=>{
     const anchorPoints = ev.item.getAnchorPoints();
     console.log(model.id);
     let zoom=graph.value.getZoom().toFixed(1)
+    
     if(!model.collapsed) {
-      if(model.id==66) {
+      if(model.id==0) {
         data2.value.nodes.forEach(v=>{
       graph.value.addItem('node',{...v,collapsed:false,isChild:model.id,x:Math.ceil(Math.random())})
       })

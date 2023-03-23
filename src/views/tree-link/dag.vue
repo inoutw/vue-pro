@@ -1,4 +1,4 @@
-<script>
+<script lang="js">
 import { Graph, Node, Path, Edge, Platform, StringExt } from '@antv/x6'
 import { Selection } from '@antv/x6-plugin-selection'
 import classnames from 'classnames'
@@ -13,14 +13,14 @@ enum NodeType {
   JOIN = 'JOIN', // 数据连接
   UNION = 'UNION', // 数据合并
   AGG = 'AGG', // 数据聚合
-  OUTPUT = 'OUTPUT', // 数据输出
+  OUTPUT = 'OUTPUT' // 数据输出
 }
 
 // 元素校验状态
 enum CellStatus {
   DEFAULT = 'default',
   SUCCESS = 'success',
-  ERROR = 'error',
+  ERROR = 'error'
 }
 
 // 节点位置信息
@@ -33,39 +33,35 @@ interface Position {
 const PROCESSING_TYPE_LIST = [
   {
     type: 'FILTER',
-    name: '数据筛选',
+    name: '数据筛选'
   },
   {
     type: 'JOIN',
-    name: '数据连接',
+    name: '数据连接'
   },
   {
     type: 'UNION',
-    name: '数据合并',
+    name: '数据合并'
   },
   {
     type: 'AGG',
-    name: '数据聚合',
+    name: '数据聚合'
   },
 
   {
     type: 'OUTPUT',
-    name: '数据输出',
-  },
+    name: '数据输出'
+  }
 ]
 
 // 不同节点类型的icon
 const NODE_TYPE_LOGO = {
-  INPUT:
-    'https://mdn.alipayobjects.com/huamei_f4t1bn/afts/img/A*RXnuTpQ22xkAAAAAAAAAAAAADtOHAQ/original', // 数据输入
-  FILTER:
-    'https://mdn.alipayobjects.com/huamei_f4t1bn/afts/img/A*ZJ6qToit8P4AAAAAAAAAAAAADtOHAQ/original', // 数据筛选
+  INPUT: 'https://mdn.alipayobjects.com/huamei_f4t1bn/afts/img/A*RXnuTpQ22xkAAAAAAAAAAAAADtOHAQ/original', // 数据输入
+  FILTER: 'https://mdn.alipayobjects.com/huamei_f4t1bn/afts/img/A*ZJ6qToit8P4AAAAAAAAAAAAADtOHAQ/original', // 数据筛选
   JOIN: 'https://mdn.alipayobjects.com/huamei_f4t1bn/afts/img/A*EHqyQoDeBvIAAAAAAAAAAAAADtOHAQ/original', // 数据连接
-  UNION:
-    'https://mdn.alipayobjects.com/huamei_f4t1bn/afts/img/A*k4eyRaXv8gsAAAAAAAAAAAAADtOHAQ/original', // 数据合并
+  UNION: 'https://mdn.alipayobjects.com/huamei_f4t1bn/afts/img/A*k4eyRaXv8gsAAAAAAAAAAAAADtOHAQ/original', // 数据合并
   AGG: 'https://mdn.alipayobjects.com/huamei_f4t1bn/afts/img/A*TKG8R6nfYiAAAAAAAAAAAAAADtOHAQ/original', // 数据聚合
-  OUTPUT:
-    'https://mdn.alipayobjects.com/huamei_f4t1bn/afts/img/A*zUgORbGg1HIAAAAAAAAAAAAADtOHAQ/original', // 数据输出
+  OUTPUT: 'https://mdn.alipayobjects.com/huamei_f4t1bn/afts/img/A*zUgORbGg1HIAAAAAAAAAAAAADtOHAQ/original' // 数据输出
 }
 
 /**
@@ -74,12 +70,7 @@ const NODE_TYPE_LOGO = {
  * @param graph
  * @returns
  */
-const getDownstreamNodePosition = (
-  node: Node,
-  graph: Graph,
-  dx = 250,
-  dy = 100,
-) => {
+const getDownstreamNodePosition = (node: Node, graph: Graph, dx = 250, dy = 100) => {
   // 找出画布中以该起始节点为起点的相关边的终点id集合
   const downstreamNodeIdList: string[] = []
   graph.getEdges().forEach((edge) => {
@@ -108,7 +99,7 @@ const getDownstreamNodePosition = (
 
   return {
     x: minX !== Infinity ? minX : position.x + dx,
-    y: maxY !== -Infinity ? maxY + dy : position.y,
+    y: maxY !== -Infinity ? maxY + dy : position.y
   }
 }
 
@@ -120,28 +111,28 @@ const getPortsByType = (type: NodeType, nodeId: string) => {
       ports = [
         {
           id: `${nodeId}-out`,
-          group: 'out',
-        },
+          group: 'out'
+        }
       ]
       break
     case NodeType.OUTPUT:
       ports = [
         {
           id: `${nodeId}-in`,
-          group: 'in',
-        },
+          group: 'in'
+        }
       ]
       break
     default:
       ports = [
         {
           id: `${nodeId}-in`,
-          group: 'in',
+          group: 'in'
         },
         {
           id: `${nodeId}-out`,
-          group: 'out',
-        },
+          group: 'out'
+        }
       ]
       break
   }
@@ -155,21 +146,13 @@ const getPortsByType = (type: NodeType, nodeId: string) => {
  * @param position 节点位置
  * @returns
  */
-export const createNode = (
-  type: NodeType,
-  graph: Graph,
-  position?: Position,
-) => {
+export const createNode = (type: NodeType, graph: Graph, position?: Position) => {
   if (!graph) {
     return {}
   }
   let newNode = {}
-  const sameTypeNodes = graph
-    .getNodes()
-    .filter((item) => item.getData()?.type === type)
-  const typeName = PROCESSING_TYPE_LIST?.find(
-    (item) => item.type === type,
-  )?.name
+  const sameTypeNodes = graph.getNodes().filter((item) => item.getData()?.type === type)
+  const typeName = PROCESSING_TYPE_LIST?.find((item) => item.type === type)?.name
   const id = StringExt.uuid()
   const node = {
     id,
@@ -179,8 +162,8 @@ export const createNode = (
     ports: getPortsByType(type, id),
     data: {
       name: `${typeName}_${sameTypeNodes.length + 1}`,
-      type,
-    },
+      type
+    }
   }
   newNode = graph.addNode(node)
   return newNode
@@ -198,17 +181,17 @@ const createEdge = (source: string, target: string, graph: Graph) => {
     shape: 'data-processing-curve',
     source: {
       cell: source,
-      port: `${source}-out`,
+      port: `${source}-out`
     },
     target: {
       cell: target,
-      port: `${target}-in`,
+      port: `${target}-in`
     },
     zIndex: -1,
     data: {
       source,
-      target,
-    },
+      target
+    }
   }
   if (graph) {
     graph.addEdge(edge)
@@ -219,7 +202,7 @@ class DataProcessingDagNode extends React.Component<{
   node: Node
 }> {
   state = {
-    plusActionSelected: false,
+    plusActionSelected: false
   }
 
   // 创建下游的节点和边
@@ -242,7 +225,7 @@ class DataProcessingDagNode extends React.Component<{
   clickPlusDragMenu = (type: NodeType) => {
     this.createDownstream(type)
     this.setState({
-      plusActionSelected: false,
+      plusActionSelected: false
     })
   }
 
@@ -254,10 +237,7 @@ class DataProcessingDagNode extends React.Component<{
           const content = (
             // eslint-disable-next-line
             <a onClick={() => this.clickPlusDragMenu(item.type)}>
-              <i
-                className="node-mini-logo"
-                style={{ backgroundImage: `url(${NODE_TYPE_LOGO[item.type]})` }}
-              />
+              <i className="node-mini-logo" style={{ backgroundImage: `url(${NODE_TYPE_LOGO[item.type]})` }} />
 
               <span>{item.name}</span>
             </a>
@@ -275,7 +255,7 @@ class DataProcessingDagNode extends React.Component<{
   // 添加下游菜单的打开状态变化
   onPlusDropdownOpenChange = (value: boolean) => {
     this.setState({
-      plusActionSelected: value,
+      plusActionSelected: value
     })
   }
 
@@ -287,7 +267,7 @@ class DataProcessingDagNode extends React.Component<{
     ports.forEach((port) => {
       node.setPortProp(port.id, 'attrs/circle', {
         fill: '#fff',
-        stroke: '#85A5FF',
+        stroke: '#85A5FF'
       })
     })
   }
@@ -300,7 +280,7 @@ class DataProcessingDagNode extends React.Component<{
     ports.forEach((port) => {
       node.setPortProp(port.id, 'attrs/circle', {
         fill: 'transparent',
-        stroke: 'transparent',
+        stroke: 'transparent'
       })
     })
   }
@@ -313,19 +293,12 @@ class DataProcessingDagNode extends React.Component<{
 
     return (
       <div className="data-processing-dag-node">
-        <div
-          className="main-area"
-          onMouseEnter={this.onMainMouseEnter}
-          onMouseLeave={this.onMainMouseLeave}
-        >
+        <div className="main-area" onMouseEnter={this.onMainMouseEnter} onMouseLeave={this.onMainMouseLeave}>
           <div className="main-info">
             {/* 节点类型icon */}
-            <i
-              className="node-logo"
-              style={{ backgroundImage: `url(${NODE_TYPE_LOGO[type]})` }}
-            />
+            <i className="node-logo" style={{ backgroundImage: `url(${NODE_TYPE_LOGO[type]})` }} />
             {/* <Tooltip title={name} mouseEnterDelay={0.8}> */}
-              <div className="ellipsis-row node-name">{name}</div>
+            <div className="ellipsis-row node-name">{name}</div>
             {/* </Tooltip> */}
           </div>
 
@@ -336,9 +309,7 @@ class DataProcessingDagNode extends React.Component<{
                 <i className="status-icon status-icon-error" />
               </Tooltip>
             )}
-            {status === CellStatus.SUCCESS && (
-              <i className="status-icon status-icon-success" />
-            )}
+            {status === CellStatus.SUCCESS && <i className="status-icon status-icon-success" />}
 
             {/* 节点操作菜单 */}
             <div className="more-action-container">
@@ -360,7 +331,7 @@ class DataProcessingDagNode extends React.Component<{
             >
               <i
                 className={classnames('plus-action', {
-                  'plus-action-selected': plusActionSelected,
+                  'plus-action-selected': plusActionSelected
                 })}
               />
             </Dropdown>
@@ -387,17 +358,17 @@ register({
             magnet: true,
             stroke: 'transparent',
             strokeWidth: 1,
-            fill: 'transparent',
-          },
-        },
+            fill: 'transparent'
+          }
+        }
       },
 
       out: {
         position: {
           name: 'right',
           args: {
-            dx: -32,
-          },
+            dx: -32
+          }
         },
 
         attrs: {
@@ -406,12 +377,12 @@ register({
             magnet: true,
             stroke: 'transparent',
             strokeWidth: 1,
-            fill: 'transparent',
-          },
-        },
-      },
-    },
-  },
+            fill: 'transparent'
+          }
+        }
+      }
+    }
+  }
 })
 
 // 注册连线
@@ -420,35 +391,25 @@ Graph.registerConnector(
   (sourcePoint, targetPoint) => {
     const hgap = Math.abs(targetPoint.x - sourcePoint.x)
     const path = new Path()
-    path.appendSegment(
-      Path.createSegment('M', sourcePoint.x - 4, sourcePoint.y),
-    )
-    path.appendSegment(
-      Path.createSegment('L', sourcePoint.x + 12, sourcePoint.y),
-    )
+    path.appendSegment(Path.createSegment('M', sourcePoint.x - 4, sourcePoint.y))
+    path.appendSegment(Path.createSegment('L', sourcePoint.x + 12, sourcePoint.y))
     // 水平三阶贝塞尔曲线
     path.appendSegment(
       Path.createSegment(
         'C',
-        sourcePoint.x < targetPoint.x
-          ? sourcePoint.x + hgap / 2
-          : sourcePoint.x - hgap / 2,
+        sourcePoint.x < targetPoint.x ? sourcePoint.x + hgap / 2 : sourcePoint.x - hgap / 2,
         sourcePoint.y,
-        sourcePoint.x < targetPoint.x
-          ? targetPoint.x - hgap / 2
-          : targetPoint.x + hgap / 2,
+        sourcePoint.x < targetPoint.x ? targetPoint.x - hgap / 2 : targetPoint.x + hgap / 2,
         targetPoint.y,
         targetPoint.x - 6,
-        targetPoint.y,
-      ),
+        targetPoint.y
+      )
     )
-    path.appendSegment(
-      Path.createSegment('L', targetPoint.x + 2, targetPoint.y),
-    )
+    path.appendSegment(Path.createSegment('L', targetPoint.x + 2, targetPoint.y))
 
     return path.serialize()
   },
-  true,
+  true
 )
 
 Edge.config({
@@ -460,24 +421,24 @@ Edge.config({
         fill: 'none',
         cursor: 'pointer',
         stroke: 'transparent',
-        strokeLinecap: 'round',
-      },
+        strokeLinecap: 'round'
+      }
     },
     {
       tagName: 'path',
       selector: 'line',
       attrs: {
         fill: 'none',
-        pointerEvents: 'none',
-      },
-    },
+        pointerEvents: 'none'
+      }
+    }
   ],
   connector: { name: 'curveConnector' },
   attrs: {
     wrap: {
       connection: true,
       strokeWidth: 10,
-      strokeLinejoin: 'round',
+      strokeLinejoin: 'round'
     },
     line: {
       connection: true,
@@ -485,10 +446,10 @@ Edge.config({
       strokeWidth: 1,
       targetMarker: {
         name: 'classic',
-        size: 6,
-      },
-    },
-  },
+        size: 6
+      }
+    }
+  }
 })
 
 Graph.registerEdge('data-processing-curve', Edge, true)
@@ -497,14 +458,14 @@ const graph: Graph = new Graph({
   container: document.getElementById('container')!,
   panning: {
     enabled: true,
-    eventTypes: ['leftMouseDown', 'mouseWheel'],
+    eventTypes: ['leftMouseDown', 'mouseWheel']
   },
   mousewheel: {
     enabled: true,
     modifiers: 'ctrl',
     factor: 1.1,
     maxScale: 1.5,
-    minScale: 0.5,
+    minScale: 0.5
   },
   highlighting: {
     magnetAdsorbed: {
@@ -513,10 +474,10 @@ const graph: Graph = new Graph({
         attrs: {
           fill: '#fff',
           stroke: '#31d0c6',
-          strokeWidth: 4,
-        },
-      },
-    },
+          strokeWidth: 4
+        }
+      }
+    }
   },
   connecting: {
     snap: true,
@@ -526,24 +487,24 @@ const graph: Graph = new Graph({
     sourceAnchor: {
       name: 'left',
       args: {
-        dx: Platform.IS_SAFARI ? 4 : 8,
-      },
+        dx: Platform.IS_SAFARI ? 4 : 8
+      }
     },
     targetAnchor: {
       name: 'right',
       args: {
-        dx: Platform.IS_SAFARI ? 4 : -8,
-      },
+        dx: Platform.IS_SAFARI ? 4 : -8
+      }
     },
     createEdge() {
       return graph.createEdge({
         shape: 'data-processing-curve',
         attrs: {
           line: {
-            strokeDasharray: '5 5',
-          },
+            strokeDasharray: '5 5'
+          }
         },
-        zIndex: -1,
+        zIndex: -1
       })
     },
     // 连接桩校验
@@ -557,8 +518,8 @@ const graph: Graph = new Graph({
         return false
       }
       return true
-    },
-  },
+    }
+  }
 })
 
 graph.use(
@@ -568,53 +529,53 @@ graph.use(
     rubberEdge: true,
     rubberNode: true,
     modifiers: 'shift',
-    rubberband: true,
-  }),
+    rubberband: true
+  })
 )
 
 // 节点状态列表
 const nodeStatusList = [
   {
     id: 'node-0',
-    status: 'success',
+    status: 'success'
   },
   {
     id: 'node-1',
-    status: 'success',
+    status: 'success'
   },
   {
     id: 'node-2',
-    status: 'success',
+    status: 'success'
   },
   {
     id: 'node-3',
-    status: 'success',
+    status: 'success'
   },
   {
     id: 'node-4',
     status: 'error',
-    statusMsg: '错误信息示例',
-  },
+    statusMsg: '错误信息示例'
+  }
 ]
 
 // 边状态列表
 const edgeStatusList = [
   {
     id: 'edge-0',
-    status: 'success',
+    status: 'success'
   },
   {
     id: 'edge-1',
-    status: 'success',
+    status: 'success'
   },
   {
     id: 'edge-2',
-    status: 'success',
+    status: 'success'
   },
   {
     id: 'edge-3',
-    status: 'success',
-  },
+    status: 'success'
+  }
 ]
 
 // 显示节点状态
@@ -626,7 +587,7 @@ const showNodeStatus = () => {
     node.setData({
       ...data,
       status,
-      statusMsg,
+      statusMsg
     })
   })
 }
@@ -636,8 +597,8 @@ const excuteAnimate = () => {
   graph.getEdges().forEach((edge) => {
     edge.attr({
       line: {
-        stroke: '#3471F9',
-      },
+        stroke: '#3471F9'
+      }
     })
     edge.attr('line/strokeDasharray', 5)
     edge.attr('line/style/animation', 'running-line 30s infinite linear')
@@ -671,8 +632,8 @@ fetch('/data/data-processing-dag.json')
     const zoomOptions = {
       padding: {
         left: 10,
-        right: 10,
-      },
+        right: 10
+      }
     }
     graph.zoomToFit(zoomOptions)
     setTimeout(() => {
@@ -867,5 +828,4 @@ insertCss(`
     }
   }
 `)
-
 </script>

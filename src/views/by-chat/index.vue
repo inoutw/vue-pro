@@ -1,5 +1,3 @@
-
-  
 <template>
   <v-stage :config="{ width: 500, height: 200 }">
     <v-layer>
@@ -15,7 +13,7 @@
     </v-layer>
   </v-stage>
 </template>
-<script>
+<script lang="ts">
 export default {
   data() {
     return {
@@ -28,4 +26,3 @@ export default {
   }
 }
 </script>
-  
