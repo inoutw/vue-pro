@@ -17,7 +17,7 @@ routers.beforeEach(async (to, from, next) => {
     routers.addRoute(route)
   })
   const list: any[] = routes.concat(remoteMenus)
-  console.log('list', list)
+  // console.log('list', list)
   // const list: any[] = remoteMenus
   storeMenuTree.setMenuTree(list)
 

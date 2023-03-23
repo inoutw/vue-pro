@@ -96,6 +96,7 @@ useEventListener(document, 'dblclick', handleGridDbClick)
             }"
           ></v-text>
           <sdw-hovered-row :v-show="!isEmpty(hoveredRow)" :top="hoveredRow.top" :left="hoveredRow.left" />
+          <!--被选中的单元格-->
           <sdw-active-cell
             :v-show="!isEmpty(activeCell)"
             :top="activeCell.top"
@@ -119,6 +120,7 @@ useEventListener(document, 'dblclick', handleGridDbClick)
             <!--首列CheckBox end-->
           </v-group>
 
+          <!--单元格内的文字-->
           <v-group :x="10">
             <v-text
               v-for="(colItem, keyIndex) in cellValPosArr"
