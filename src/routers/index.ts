@@ -1,9 +1,12 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import qs from 'qs'
 import { getMenu } from '../layout/helper'
 import { useMenuTree } from '../store/menu-store'
 import { createPinia } from 'pinia'
-const routes: Array<RouteRecordRaw> = []
+const routes: Array<RouteRecordRaw> = [{
+    path: '/el-tree',
+    name: 'el-tree',
+    component: ()=>import('../views/el-tree/index.vue')
+},]
 
 const routers = createRouter({
   history: createWebHistory('/'),
