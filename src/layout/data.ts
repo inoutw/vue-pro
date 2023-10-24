@@ -119,5 +119,12 @@ export const MOCK_MENU_DATA: any[] = [
     menuPath: '/eye-dropper',
     name: 'eye-dropper',
     componentUrl: '/eyedropper/index.vue'
+  },
+  {
+    id: 5,
+    title: 'Viewer',
+    menuPath: '/doc/view',
+    name: 'doc_view',
+    componentUrl: '/viewer/doc.vue'
   }
 ]

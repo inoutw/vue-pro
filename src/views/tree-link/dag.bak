@@ -1,33 +1,11 @@
-<script lang="js">
+<script lang="ts">
 import { Graph, Node, Path, Edge, Platform, StringExt } from '@antv/x6'
 import { Selection } from '@antv/x6-plugin-selection'
 import classnames from 'classnames'
 import insertCss from 'insert-css'
 import { register } from '@antv/x6-vue-shape'
 import { Tooltip, Dropdown } from 'antd'
-
-// 节点类型
-enum NodeType {
-  INPUT = 'INPUT', // 数据输入
-  FILTER = 'FILTER', // 数据过滤
-  JOIN = 'JOIN', // 数据连接
-  UNION = 'UNION', // 数据合并
-  AGG = 'AGG', // 数据聚合
-  OUTPUT = 'OUTPUT' // 数据输出
-}
-
-// 元素校验状态
-enum CellStatus {
-  DEFAULT = 'default',
-  SUCCESS = 'success',
-  ERROR = 'error'
-}
-
-// 节点位置信息
-interface Position {
-  x: number
-  y: number
-}
+import { NodeType, CellStatus, Position } from './types'
 
 // 加工类型列表
 const PROCESSING_TYPE_LIST = [
@@ -66,21 +44,21 @@ const NODE_TYPE_LOGO = {
 
 /**
  * 根据起点初始下游节点的位置信息
- * @param node 起始节点
+ * @param snode 起始节点
  * @param graph
  * @returns
  */
-const getDownstreamNodePosition = (node: Node, graph: Graph, dx = 250, dy = 100) => {
+const getDownstreamNodePosition = (snode: any, graph: Graph, dx = 250, dy = 100) => {
   // 找出画布中以该起始节点为起点的相关边的终点id集合
   const downstreamNodeIdList: string[] = []
   graph.getEdges().forEach((edge) => {
     const originEdge = edge.toJSON()?.data
-    if (originEdge.source === node.id) {
+    if (originEdge.source === snode.id) {
       downstreamNodeIdList.push(originEdge.target)
     }
   })
   // 获取起点的位置信息
-  const position = node.getPosition()
+  const position = snode.getPosition()
   let minX = Infinity
   let maxY = -Infinity
   graph.getNodes().forEach((graphNode) => {

@@ -19,29 +19,6 @@ defineProps({
     default: false
   }
 })
-
-const bottomMenu = [
-  {
-    path: '/projectManage',
-    name: 'projectManage',
-    component: () => import('@views/project-manage/index.vue'),
-    meta: {
-      name: '项目设置',
-      hidden: false,
-      icon: 'Setting'
-    }
-  },
-  {
-    path: '/projectManage1',
-    name: 'projectManage',
-    component: () => import('@views/project-manage/index.vue'),
-    meta: {
-      name: '项目应用',
-      hidden: false,
-      icon: 'Setting'
-    }
-  }
-]
 </script>
 <template>
   <div class="left-bar">
