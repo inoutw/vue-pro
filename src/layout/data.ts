@@ -123,8 +123,25 @@ export const MOCK_MENU_DATA: any[] = [
   {
     id: 5,
     title: 'Viewer',
-    menuPath: '/doc/view',
+    menuPath: '/doc',
     name: 'doc_view',
-    componentUrl: '/viewer/doc.vue'
+    children: [
+      {
+        id: 50,
+        menuCode: 'doc/docx-preview',
+        title: 'Docx Preview',
+        menuPath: '/doc/docx-preview',
+        icon: 'DesignIcon',
+        componentUrl: '/viewer/docx-preview.vue'
+      },
+      {
+        id: 51,
+        menuCode: 'doc/vue-office',
+        title: 'Vue Office',
+        menuPath: '/doc/vue-office',
+        icon: 'DesignIcon',
+        componentUrl: '/viewer/vue-office.vue'
+      }
+    ]
   }
 ]
