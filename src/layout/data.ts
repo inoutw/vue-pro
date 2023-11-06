@@ -141,6 +141,38 @@ export const MOCK_MENU_DATA: any[] = [
         menuPath: '/doc/vue-office',
         icon: 'DesignIcon',
         componentUrl: '/viewer/vue-office.vue'
+      },
+      {
+        id: 52,
+        menuCode: 'doc/iframe',
+        title: 'Iframe',
+        menuPath: '/doc/iframe',
+        icon: 'DesignIcon',
+        componentUrl: '/viewer/iframe.vue'
+      },
+      {
+        id: 53,
+        menuCode: 'pdf/canvas',
+        title: 'PDF JS',
+        menuPath: '/pdf/canvas',
+        icon: 'DesignIcon',
+        componentUrl: '/viewer/pdf-canvas.vue'
+      },
+      {
+        id: 53,
+        menuCode: 'pdf/iframe',
+        title: 'PDF Iframe',
+        menuPath: '/pdf/iframe',
+        icon: 'DesignIcon',
+        componentUrl: '/viewer/pdf-iframe.vue'
+      },
+      {
+        id: 54,
+        menuCode: 'pdf/html',
+        title: 'PDF Html',
+        menuPath: '/pdf/html',
+        icon: 'DesignIcon',
+        componentUrl: '/viewer/pdf-html.vue'
       }
     ]
   }

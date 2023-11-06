@@ -9,6 +9,42 @@
   <body>
     <div id="app"></div>
     <script type="module" src="/src/main.ts"></script>
+    <!--optional polyfill for promise-->
+    <!-- <script src="https://unpkg.com/promise-polyfill/dist/polyfill.min.js"></script> -->
+    <!--lib uses jszip-->
+    <!-- <script src="https://unpkg.com/jszip/dist/jszip.min.js"></script> -->
+    <!-- <script src="/docx-preview.js"></script> -->
+<script>
 
+// function fetchDocx(src, options) {
+//   return fetch(src, options).then((res) => {
+//     if (res.status !== 200) {
+//       return Promise.reject(res)
+//     }
+//     return res
+//   })
+// }
+// async function getBlob(data) {
+//   let blob
+//   if (data instanceof Blob) {
+//     blob = data
+//   } else if (data instanceof Response) {
+//     blob = await data.blob()
+//   } else if (data instanceof ArrayBuffer) {
+//     blob = new Blob([data])
+//   }
+//   return blob
+// }
+// var docData = '';
+// const fileSrc = 'http://192.168.53.219/file/20231023/a612c6e045b74af1be9a83f28a675a80.docx'
+//   const targetHtml = document.getElementById('app')
+  // fetchDocx(fileSrc).then((res) => {
+  //   getBlob(res).then((resBlob) => {
+  //     docData = resBlob
+  //     docx.renderAsync(docData, targetHtml, targetHtml, {}).then((x) => console.log('docx: finished'))
+  //   })
+  // })
+
+</script>
   </body>
 </html>
