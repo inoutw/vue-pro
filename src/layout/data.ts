@@ -1,5 +1,19 @@
 export const MOCK_MENU_DATA: any[] = [
   {
+    id: 0,
+    menuCode: 'demo',
+    title: 'Demo',
+    menuPath: '/demo',
+    children: [{
+      id: 1,
+      menuCode: 'img-map',
+      title: '图片热点映射',
+      menuPath: '/img-map',
+      icon: 'DesignIcon',
+      componentUrl: '/demo/img-map.vue'
+    }]
+  },
+  {
     id: 1,
     menuCode: 'konva',
     title: 'Konva',
@@ -66,7 +80,31 @@ export const MOCK_MENU_DATA: any[] = [
         menuPath: '/chatgpt/cursor',
         icon: 'DesignIcon',
         componentUrl: '/by-chat/cursor.vue'
-      }
+      },
+      {
+        id: 21,
+        menuCode: 'chatgpt/swim-lane',
+        title: '泳道',
+        menuPath: '/chatgpt/swim-lane',
+        icon: 'DesignIcon',
+        componentUrl: '/by-chat/swim-lane.vue'
+      },
+      {
+        id: 22,
+        menuCode: 'chatgpt/resizer',
+        title: '拖动',
+        menuPath: '/chatgpt/resizer',
+        icon: 'DesignIcon',
+        componentUrl: '/by-chat/resizer.vue'
+      },
+      {
+        id: 23,
+        menuCode: 'chatgpt/at-email',
+        title: '邮箱调取',
+        menuPath: '/chatgpt/at-email',
+        icon: 'DesignIcon',
+        componentUrl: '/by-chat/at-email.vue'
+      },
     ]
   },
   {

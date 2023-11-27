@@ -33,7 +33,7 @@ defineProps({
     <div class="menu-list">
       <div class="top-menu"><MenuItem :menuData="menuData" :activeMenu="activeMenu" :collapse="collapse" /></div>
       <el-divider />
-      <div class="bottom-menu"><MenuItem :menuData="bottomMenu" :activeMenu="activeMenu" :collapse="collapse" /></div>
+      <!-- <div class="bottom-menu"><MenuItem :menuData="bottomMenu" :activeMenu="activeMenu" :collapse="collapse" /></div> -->
     </div>
   </div>
 </template>

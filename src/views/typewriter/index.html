@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+
+
+<head>
+  <meta charset="UTF-8">
+  <title>ChatGPT Streaming Demo</title>
+  <!-- 加载 marked.js 库 -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+  <script type="module">
+
+    const ModalText = 'gpt-3.5-turbo';
+    const TIME_OUT_MS = 60000;
+    const makeRequestParam = (messages, stream=true) => {
+        let sendMessages = [];
+        if(typeof messages === 'string') {
+            sendMessages = [{
+                role: 'user',
+                content: messages
+              }];
+        }else {
+            sendMessages = messages.map((v) => ({
+            role: 'user',
+            content: v
+          }));
+        }
+
+      return {
+        messages: sendMessages,
+        stream,
+        model: ModalText,
+        temperature: 1,
+        presence_penalty: 0
+      };
+    };
+
+    window.onload = async () => {
+      const url = "http://127.0.0.1:3333/v1/chat/completions";
+      const req = makeRequestParam('你好, 请帮我用js写一个冒泡排序算法');
+      const jsonBody = {
+        messages: [
+          {
+            role: 'user',
+            content: 'Hello'
+          }
+        ]
+      };
+
+
+      const outputDiv = document.getElementById("output");
+      let result = "";
+
+
+      const answer = async (isContinue) => {
+        const res = await fetch(url, {
+          method: "POST",
+          body: JSON.stringify(req),
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: 'Bearer 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',
+          }
+        })
+        // Create a reader for the response body
+        const reader = res.body.getReader();
+        // Create a decoder for UTF-8 encoded text
+        const decoder = new TextDecoder("utf-8");
+        let render = 0
+        // Function to read chunks of the response body
+        const readChunk = async () => {
+          return reader.read().then(({ value, done }) => {
+            if (!done) {
+              const dataString = decoder.decode(value);
+              console.log(dataString)
+              dataString.toString().trim().split("data: ").forEach(async (line) => {
+                if (line != '') {
+                  const text = line.replace("data: ", "")
+                  try {
+                    // Parse the chunk as a JSON object
+                    const data = JSON.parse(text)
+                    console.log(data.choices[0])
+                    if (data.choices[0].delta.content) {
+                      result += data.choices[0].delta.content
+                      if (render++ > 5) {
+                        // outputDiv.innerHTML += data.choices[0].delta.content
+                        render = 0
+                      } else {
+                        outputDiv.innerHTML = marked.parse(result + data.choices[0].delta.content)
+                      }
+                    }
+                    if (data.choices[0].finish_reason === 'length') { // 支持长回复
+                      await answer(true)
+                    } else if (data.choices[0].finish_reason === 'stop') {
+                      outputDiv.innerHTML = marked.parse(result);
+                      jsonBody.result = result
+                      return
+                    }
+                    return readChunk();
+                  } catch (error) {
+                    // End the stream but do not send the error, as this is likely the DONE message from createCompletion
+                    // console.error(error)
+                    console.log(text)
+                    if (text.trim() === '[DONE]') {
+                      outputDiv.innerHTML = marked.parse(result);
+                      jsonBody.result = result
+                      return
+                    }
+                  }
+                }
+              })
+            } else {
+              console.log("done");
+            }
+          });
+        };
+
+
+        await readChunk();
+      }
+
+
+      await answer()
+      
+    }
+
+    
+  </script>
+</head>
+
+
+<body>
+  <div id="output"></div>
+</body>
+
+
+</html>

@@ -6,6 +6,10 @@ const routes: Array<RouteRecordRaw> = [{
     path: '/el-tree',
     name: 'el-tree',
     component: ()=>import('../views/el-tree/index.vue')
+},{
+  path: '/img',
+  name: 'dynamic-img',
+  component: ()=>import('../views/demo/img-dynamic-url.vue')
 },]
 
 const routers = createRouter({
